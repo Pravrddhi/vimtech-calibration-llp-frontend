@@ -1,6 +1,6 @@
 export const roles = [
-  { key: 'technical', title: 'Technical\nManager' },
-  { key: 'engineer', title: 'Calibration\nEngineer', icon: 'tools' },
+  { key: 'technical_manager', title: 'Technical\nManager' },
+  { key: 'calibration_engineer', title: 'Calibration\nEngineer', icon: 'tools' },
   { key: 'admin', title: 'Administration\nExecutive', icon: 'file-document-outline' },
 ];
 

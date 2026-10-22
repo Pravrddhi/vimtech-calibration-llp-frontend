@@ -1,24 +1,43 @@
 import React, { useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { roles } from '../constants/content';
 import styles from '../styles';
 import RoleCard from './RoleCard';
 import ThemePopup from './ThemePopup';
+import { loginWithPassword } from '../services/auth';
+import { saveSession } from '../services/sessionStorage';
 
-export default function LoginPanel({ compact }) {
+export default function LoginPanel({ compact, onLoginSuccess }) {
   const [role, setRole] = useState('engineer');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const onLogin = () => {
+  const onLogin = async () => {
     if (!role) return setPopupMessage('Please select your role to continue.');
     if (!username.trim() || !password) return setPopupMessage('Please enter your username and password.');
-    setPopupMessage('Login UI is ready. Connect your authentication API to sign in.');
+
+    setIsSubmitting(true);
+    try {
+      const result = await loginWithPassword(username.trim(), password, role);
+      const nextSession = {
+        user: result.user,
+        access: result.access,
+        refresh: result.refresh,
+      };
+      await saveSession(nextSession);
+      setPassword('');
+      onLoginSuccess(nextSession, result.message);
+    } catch (error) {
+      setPopupMessage(error instanceof Error ? error.message : 'Unable to log in. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -96,7 +115,11 @@ export default function LoginPanel({ compact }) {
 
       <Pressable
         onPress={onLogin}
-        style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}
+        disabled={isSubmitting}
+        style={({ pressed }) => [
+          styles.loginButton,
+          (pressed || isSubmitting) && styles.loginButtonPressed,
+        ]}
       >
         <LinearGradient
           colors={['#28a4b6', '#0089a7']}
@@ -104,8 +127,14 @@ export default function LoginPanel({ compact }) {
           end={{ x: 1, y: 0 }}
           style={styles.loginGradient}
         >
-          <Feather name="log-in" size={28} color="#fff" />
-          <Text style={styles.loginButtonText}>Login</Text>
+          {isSubmitting ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <>
+              <Feather name="log-in" size={28} color="#fff" />
+              <Text style={styles.loginButtonText}>Login</Text>
+            </>
+          )}
         </LinearGradient>
       </Pressable>
       <ThemePopup
