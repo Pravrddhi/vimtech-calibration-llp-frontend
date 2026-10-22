@@ -1,6 +1,4 @@
-<<<<<<< Updated upstream
 # vimtech-calibration-llp
-=======
 # VIMTECH Calibration LLP — React Native (Android + Web)
 
 This is an Expo React Native project that runs on Android and in a web browser from the same codebase.
@@ -63,4 +61,3 @@ The returned user and access/refresh tokens are kept in browser `sessionStorage`
 ## Notes
 
 The brand mark and feature/role icons are recreated with vector icons, not the original VIMTECH logo artwork. The laboratory photo is included in `assets/laboratory-scene.jpg`.
->>>>>>> Stashed changes
