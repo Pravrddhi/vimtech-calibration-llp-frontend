@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "VIMTECH Calibration LLP",
+    "slug": "vimtech-calibration-login",
+    "version": "1.0.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#eafaff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "web": {
+      "bundler": "metro",
+      "name": "VIMTECH Calibration LLP"
+    },
+    "android": {
+      "package": "com.vimtech.calibrationlogin"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-font",
+      "expo-secure-store"
+    ]
+  }
+}
